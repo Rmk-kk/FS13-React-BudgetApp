@@ -1,0 +1,14 @@
+.header_wrap {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.header_wrap-btn_wrap {
+    display: flex;
+    align-items: center;
+}
+
+.header_wrap-btn_wrap button:not(:last-child) {
+    margin-right: 15px;
+}
