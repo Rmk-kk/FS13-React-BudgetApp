@@ -1,0 +1,25 @@
+.savings-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.savings-card .progress {
+    margin-bottom: 1rem;
+}
+
+.savings-card button:not(:last-child) {
+    margin-bottom: 1rem;
+}
+
+.savings-card button:last-child {
+    max-width: 70%;
+    align-self: center;
+}
+
+.savings-card .progress {
+    height: 1.4rem;
+}
+.savings-card .progress-bar {
+    background-color: #37373d;;
+    height: 1.4rem;
+}

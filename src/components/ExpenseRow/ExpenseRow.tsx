@@ -1,6 +1,6 @@
 import {Col} from "react-bootstrap";
-import CardItem from "../card-item/CardItem";
-import {FormData} from "../app/App";
+import CardItem from "../CardItem/CardItem";
+import {FormData} from "../App/App";
 import nextId from "react-id-generator";
 
 const ExpenseRow = (props:ExpenseDataProps) => {
@@ -8,7 +8,7 @@ const ExpenseRow = (props:ExpenseDataProps) => {
     const {expenseData} = props;
 
     const elements = expenseData.map(item => {
-        return <CardItem title={item.modalType} amount={item.amount} key={nextId()}/>
+        return <CardItem title={item.modalType} amount={item.amount} source={item.source} key={nextId()}/>
     })
 
     return (

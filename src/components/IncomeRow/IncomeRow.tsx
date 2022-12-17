@@ -1,7 +1,7 @@
 import {Col} from "react-bootstrap";
-import CardItem from "../card-item/CardItem";
+import CardItem from "../CardItem/CardItem";
 import {CardInfo} from "../../interfaces";
-import {FormData} from "../app/App";
+import {FormData} from "../App/App";
 import nextId from "react-id-generator";
 const IncomeRow = (props:IncomeProps) => {
 
@@ -9,7 +9,7 @@ const IncomeRow = (props:IncomeProps) => {
 
 
     const elements = incomeData.map(item => {
-        return <CardItem title={item.modalType} amount={item.amount} key={nextId()}/>
+        return <CardItem title={item.modalType} amount={item.amount} source={item.source} key={nextId()}/>
     })
 
     return (
