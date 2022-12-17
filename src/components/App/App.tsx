@@ -14,7 +14,14 @@ const App = () => {
     const [savings, setSavings] = useState<SavingsData>({currentAmount: 0, target: 1000})
     const [show, setShow] = useState(false);
     const [type, setType] = useState('');
+    let [balance, setBalance] = useState(0);
 
+    useEffect(() => {
+        handleBalance();
+        if(balance < 0) {
+            setBalance(0);
+        }
+    }, [formData])
     const showModal = (type:ModalType) => {
         setShow(true);
         setType(type)
@@ -27,11 +34,26 @@ const App = () => {
         setFormData(data);
     }
 
+    const handleBalance = () => {
+        if(formData.modalType === 'Expense') {
+            setBalance(balance -= Number(formData.amount));
+        } else if(formData.modalType === 'Income') {
+            setBalance(balance += Number(formData.amount));
+        }
+    }
+
     const handleSavings = (amount:number, type:ModalType) => {
         if(type === 'Savings') {
-            setSavings(  {target: amount, currentAmount: savings.currentAmount})
-        } else if(type === 'TransferToSavings') {
-            setSavings(  {currentAmount: amount + savings.currentAmount,target: savings.target})
+            setSavings(  {
+                target: amount,
+                currentAmount: savings.currentAmount
+            })
+        } else if(type === 'TransferToSavings' && amount <= balance) {
+            setSavings(  {
+                currentAmount: amount + savings.currentAmount,
+                target: savings.target
+            });
+            setBalance(balance - amount)
         }
     }
 
@@ -40,7 +62,7 @@ const App = () => {
         <Header showModal={showModal}/>
         <Content formData={formData} handleForm={handleForm} showModal={showModal} savings={savings}/>
         <ModalWindow modalType={type} show={show} closeModal={closeModal} handleForm={handleForm} handleSavings={handleSavings}/>
-        <Footer/>
+        <Footer balance={balance + savings.currentAmount}/>
     </Container>
   );
 }

@@ -16,7 +16,7 @@ const Content = (props:ContentProps) => {
 
     useEffect(() => {
         setContentData(formData)
-        checkCurrentBalance(formData, balance)
+        checkCurrentBalance()
     }, [props.formData])
 
     useEffect(() => {
@@ -34,12 +34,11 @@ const Content = (props:ContentProps) => {
         }
     }
 
-    const checkCurrentBalance = (data:FormData, currBalance:number) => {
-        if(data.amount && data.modalType === 'Income') {
-             setBalance(currBalance + Number(data.amount))
-        } else if (data.amount && data.modalType === 'Expense') {
-            setBalance(currBalance - Number(data.amount))
-        }
+    const checkCurrentBalance = () => {
+        let result = 0;
+        incomeData.map(item => item.amount + result);
+        expenseData.map(item => result - +item.amount)
+        setBalance(result)
     }
 
     return (
@@ -55,7 +54,6 @@ const Content = (props:ContentProps) => {
         </>
     )
 }
-
 
 
 export default Content
