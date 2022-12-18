@@ -8,7 +8,7 @@ const CardItem:FC<CardInfo> = ({title, amount, source}) => {
             <Card.Body>
                 <Card.Title>{title}</Card.Title>
                 <Card.Text>Source: {source}</Card.Text>
-                <Card.Text>{amount}</Card.Text>
+                <Card.Text>Amount: {amount}</Card.Text>
             </Card.Body>
         </Card>
     )

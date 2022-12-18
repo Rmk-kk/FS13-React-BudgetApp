@@ -4,6 +4,7 @@ import {Form, Modal} from "react-bootstrap";
 import './modal.css'
 import {FormData, SavingsData} from "../App/App";
 import {ModalInputType, ModalType} from "../../interfaces";
+import * as regexpp from "regexpp";
 
 interface ModalWindowProps {
     modalType : string,
@@ -18,7 +19,7 @@ const ModalWindow = (props:ModalWindowProps) => {
     const [show, setShow] = useState(false);
     const [amount, setAmount] = useState('');
     const [source, setSource] = useState('');
-    const { modalType, handleForm,handleSavings } = props;
+    const { modalType, handleForm, handleSavings } = props;
 
     useEffect(() => {
         setShow(props.show);
@@ -26,24 +27,24 @@ const ModalWindow = (props:ModalWindowProps) => {
 
     const handleClose = () => {
         setShow(false);
+        setAmount('');
+        setSource('');
         props.closeModal();
     }
 
     const handleFormChange = (data: string, type: ModalInputType) => {
+        const letterValidation = /^[a-zA-Z ]*$/ig
+        const numberValidation = /^\d*$/
         if(type === 'amount') {
-            setAmount(data);
+            if(numberValidation.test(data)) {
+                setAmount(data)
+            }
         } else if(type === 'source') {
-            setSource(data);
+            if(letterValidation.test(data)) {
+                setSource(data);
+            }
         }
     }
-
-    const handleFormSubmit = (amount:number, type:ModalType) => {
-        handleSavings(amount, type);
-        setAmount('');
-        setSource('');
-        handleClose();
-    }
-
 
 
     const formElement = (modal:string) => {
@@ -52,15 +53,17 @@ const ModalWindow = (props:ModalWindowProps) => {
                 <>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>{modal} amount</Form.Label>
-                        <Form.Control type="number"
+                        <Form.Control type="text"
                                       placeholder={`Enter ${modal.toLowerCase()} amount`}
+                                      value={amount}
                                       onChange={(e) => handleFormChange(e.currentTarget.value, 'amount')}
                         />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>{`${modal} source`}</Form.Label>
+                        <Form.Label>{modal} source</Form.Label>
                         <Form.Control type="text"
                                       placeholder={`Enter ${modal.toLowerCase()} source`}
+                                      value={source}
                                       onChange={(e) => handleFormChange(e.currentTarget.value, 'source')}
                         />
                     </Form.Group>
@@ -68,7 +71,7 @@ const ModalWindow = (props:ModalWindowProps) => {
                         <Button variant="outline-secondary" onClick={handleClose}>
                             Close
                         </Button>
-                        <Button variant="secondary" onClick={() => handleForm({amount, source, modalType})}>
+                        <Button type='submit' variant="secondary" onClick={() => handleForm({amount, source, modalType})}>
                             Add {modalType}
                         </Button>
                     </Modal.Footer>
@@ -79,8 +82,9 @@ const ModalWindow = (props:ModalWindowProps) => {
                 <>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>{modal} target amount</Form.Label>
-                        <Form.Control type="number"
+                        <Form.Control type="text"
                                       placeholder={`Enter savings target`}
+                                      value={amount}
                                       onChange={(e) => handleFormChange(e.currentTarget.value, 'amount')}
                         />
                     </Form.Group>
@@ -88,7 +92,7 @@ const ModalWindow = (props:ModalWindowProps) => {
                         <Button variant="outline-secondary" onClick={handleClose}>
                             Close
                         </Button>
-                        <Button variant="secondary" onClick={() => handleFormSubmit(Number(amount), 'Savings')}>
+                        <Button type='submit' variant="secondary" onClick={() => handleSavings(Number(amount), 'Savings')}>
                             Set Savings Target
                         </Button>
                     </Modal.Footer>
@@ -99,8 +103,9 @@ const ModalWindow = (props:ModalWindowProps) => {
                 <>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Transfer to savings account</Form.Label>
-                        <Form.Control type="number"
+                        <Form.Control type="text"
                                       placeholder={`Enter amount to transfer`}
+                                      value={amount}
                                       onChange={(e) => handleFormChange(e.currentTarget.value, 'amount')
                         }
                         />
@@ -110,8 +115,9 @@ const ModalWindow = (props:ModalWindowProps) => {
                             Close
                         </Button>
                         <Button variant="secondary"
+                                type='submit'
                                 onClick={() => {
-                                    handleFormSubmit(Number(amount), 'Transfer')
+                                    handleSavings(Number(amount), 'Transfer')
                                 }}
                         >
                             Transfer
@@ -124,10 +130,10 @@ const ModalWindow = (props:ModalWindowProps) => {
                 <>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Withdraw from savings account</Form.Label>
-                        <Form.Control type="number"
+                        <Form.Control type="text"
                                       placeholder={`Enter amount to withdraw`}
-                                      onChange={(e) => handleFormChange(e.currentTarget.value, 'amount')
-                                      }
+                                      value={amount}
+                                      onChange={(e) => handleFormChange(e.currentTarget.value, 'amount')}
                         />
                     </Form.Group>
                     <Modal.Footer>
@@ -135,10 +141,10 @@ const ModalWindow = (props:ModalWindowProps) => {
                             Close
                         </Button>
                         <Button variant="secondary"
+                                type='submit'
                                 onClick={() => {
-                                    handleFormSubmit(Number(amount), 'Withdraw')
-                                }}
-                        >
+                                    handleSavings(Number(amount), 'Withdraw')
+                                }}>
                             Withdraw
                         </Button>
                     </Modal.Footer>
@@ -153,7 +159,10 @@ const ModalWindow = (props:ModalWindowProps) => {
                 <Modal.Header closeButton>
                     <Modal.Title>New {modalType}</Modal.Title>
                 </Modal.Header>
-                <Form className={'modal-form'}>
+                <Form className={'modal-form'} onSubmit={e => {
+                    e.preventDefault();
+                    handleClose();
+                }}>
                     {formElement(modalType)}
                 </Form>
             </Modal>
