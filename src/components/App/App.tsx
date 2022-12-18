@@ -48,21 +48,32 @@ const App = () => {
                 target: amount,
                 currentAmount: savings.currentAmount
             })
-        } else if(type === 'TransferToSavings' && amount <= balance) {
+        } else if(type === 'Transfer' && amount <= balance) {
             setSavings(  {
                 currentAmount: amount + savings.currentAmount,
                 target: savings.target
             });
             setBalance(balance - amount)
+        } else if(type ==='Withdraw' && amount <= savings.currentAmount) {
+            setSavings({
+                currentAmount: savings.currentAmount - amount,
+                target: savings.target,
+            })
+            setBalance(balance + amount);
         }
+    }
+
+    const resetSavingsTarget = () => {
+        setBalance(balance + savings.currentAmount);
+        setSavings({target: 0, currentAmount: 0});
     }
 
   return (
     <Container className="App">
         <Header showModal={showModal}/>
-        <Content formData={formData} handleForm={handleForm} showModal={showModal} savings={savings}/>
+        <Content formData={formData} handleForm={handleForm} showModal={showModal} savings={savings} resetSavingsTarget={resetSavingsTarget}/>
         <ModalWindow modalType={type} show={show} closeModal={closeModal} handleForm={handleForm} handleSavings={handleSavings}/>
-        <Footer balance={balance + savings.currentAmount}/>
+        <Footer balance={balance} savings = {savings}/>
     </Container>
   );
 }

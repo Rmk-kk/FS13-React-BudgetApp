@@ -12,7 +12,7 @@ const Content = (props:ContentProps) => {
     const [expenseData, setExpenseData] = useState<FormData[]>([]);
     const [balance, setBalance] = useState(0);
 
-    const {formData, showModal, handleForm, savings} = props;
+    const {formData, showModal, handleForm, savings, resetSavingsTarget} = props;
 
     useEffect(() => {
         setContentData(formData)
@@ -47,7 +47,7 @@ const Content = (props:ContentProps) => {
                 <IncomeRow incomeData={incomeData}/>
                 <ExpenseRow expenseData={expenseData}/>
                 <Col>
-                    <SavingsCard showModal={showModal} handleForm={handleForm} savings={savings}/>
+                    <SavingsCard showModal={showModal} handleForm={handleForm} savings={savings} resetSavingsTarget={resetSavingsTarget}/>
                 </Col>
             </Row>
             <hr/>

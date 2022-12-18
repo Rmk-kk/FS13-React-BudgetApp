@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #2A2A35;
 }
 
 code {
@@ -24,4 +25,8 @@ body {
 
 .col {
   padding: 15px 0;
+}
+
+hr {
+  margin-top:0;
 }

@@ -94,7 +94,7 @@ const ModalWindow = (props:ModalWindowProps) => {
                     </Modal.Footer>
                 </>
             )
-        } else if(modal === 'TransferToSavings') {
+        } else if(modal === 'Transfer') {
             return (
                 <>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -111,10 +111,35 @@ const ModalWindow = (props:ModalWindowProps) => {
                         </Button>
                         <Button variant="secondary"
                                 onClick={() => {
-                                    handleFormSubmit(Number(amount), 'TransferToSavings')
+                                    handleFormSubmit(Number(amount), 'Transfer')
                                 }}
                         >
                             Transfer
+                        </Button>
+                    </Modal.Footer>
+                </>
+            )
+        } else if(modal === 'Withdraw') {
+            return (
+                <>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Label>Withdraw from savings account</Form.Label>
+                        <Form.Control type="number"
+                                      placeholder={`Enter amount to withdraw`}
+                                      onChange={(e) => handleFormChange(e.currentTarget.value, 'amount')
+                                      }
+                        />
+                    </Form.Group>
+                    <Modal.Footer>
+                        <Button variant="outline-secondary" onClick={handleClose}>
+                            Close
+                        </Button>
+                        <Button variant="secondary"
+                                onClick={() => {
+                                    handleFormSubmit(Number(amount), 'Withdraw')
+                                }}
+                        >
+                            Withdraw
                         </Button>
                     </Modal.Footer>
                 </>

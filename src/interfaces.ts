@@ -1,6 +1,6 @@
 import {FormData, SavingsData} from "./components/App/App";
 
-export type ModalType = 'Income' | 'Expense' | 'Savings' | 'TransferToSavings'
+export type ModalType = 'Income' | 'Expense' | 'Savings' | 'Transfer' | 'Withdraw'
 
 export type ModalInputType = 'source' | 'amount' | 'transfer' | 'savings'
 export interface CardInfo {
@@ -13,5 +13,7 @@ export interface ContentProps {
     formData: FormData,
     handleForm: (data:FormData) => void,
     showModal: (type:ModalType) => void,
-    savings: SavingsData
+    savings: SavingsData,
+    resetSavingsTarget:() => void,
+
 }

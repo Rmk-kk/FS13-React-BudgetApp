@@ -2,4 +2,22 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    color:#37373d;
+}
+
+.balance-card_title{
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.balance-card_title:after {
+    position: absolute;
+    content: '';
+    width: 80%;
+    background-color: #c4c4c4;
+    height: 1px;
+    bottom: 0;
+    transform: translate(-50%, -50%);
+    left: 50%;
 }
