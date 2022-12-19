@@ -1,0 +1,12 @@
+.savings-content button{
+    width: 100%;
+}
+
+.savings-content_wrap {
+    display: flex;
+    margin: 10px 0;
+}
+
+.savings-content_wrap button:first-child {
+    margin-right: 15px;
+}

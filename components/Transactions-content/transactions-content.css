@@ -1,0 +1,32 @@
+.transaction_list {
+    list-style: none;
+}
+
+.transaction_list-item {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 5px 8px;
+    background-color: #fff;
+    justify-content: space-between;
+    border-radius: 5px;
+}
+
+.transaction_list-item:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.income-transaction {
+    background: rgb(81,243,54);
+    background: linear-gradient(58deg, rgba(81,243,54,0.7357143541010154) 20%, rgba(255,255,255,1) 13%, rgba(255,255,255,1) 100%);
+}
+
+.savings-transaction {
+
+}
+
+.expense-transaction {
+    background: rgb(243,54,54);
+    background: linear-gradient(58deg, rgba(243,54,54,0.6) 20%, rgba(255,255,255,1) 13%, rgba(255,255,255,1) 100%);
+}
