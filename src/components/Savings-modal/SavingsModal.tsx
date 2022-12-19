@@ -29,7 +29,7 @@ const SavingsModal = ({handleSavingsWindow, savingsShow, savingsModalType, handl
 
     //send data to APP
     const buildDataFromForm = (e:FormEvent) => {
-        const newTransaction = {type, date, source: 'savings', amount, id: nextId()};
+        const newTransaction = {type, date: new Date(), source: 'savings', amount, id: nextId()};
         if(type === 'withdraw' || type === 'transfer') {
             handleForm(e, newTransaction);
         } else if(type ==='target') {

@@ -32,7 +32,6 @@ const App = () => {
 
 
     useEffect(()=>{
-        console.log(`update`)
         let income = 0,
             expense = 0,
             savings = 0,
@@ -116,7 +115,6 @@ const App = () => {
     //Radio buttons logic
 
     //update radio value
-
     const onRadioUpdate = (value: string) => {
         setRadioFilter(value);
     }

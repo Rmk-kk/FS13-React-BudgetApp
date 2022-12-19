@@ -26,13 +26,13 @@ const TransactionsContent = ({list}:TransactionContentProps) => {
             clazz = 'income-transaction'
         } else if(type === 'expense') {
             clazz = 'expense-transaction'
-        } else if(type ==='savings') {
+        } else if(type ==='transfer' || type === 'withdraw') {
             clazz = 'savings-transaction'
         }
         return (
             <li className={`transaction_list-item ${clazz}`} key={id}>
                 <div>Amount: {amount} $</div>
-                <div>{type} Transaction</div>
+                <div>{type}</div>
                 <div>Source: {source}</div>
                 <div>Date: {setDateState(date!)}</div>
             </li>

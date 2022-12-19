@@ -13,6 +13,12 @@
     border-radius: 5px;
 }
 
+.transaction_list-item > div:first-child {
+    max-width: 130px;
+    width: 100%;
+    text-align: left;
+}
+
 .transaction_list-item:not(:last-child) {
     margin-bottom: 10px;
 }
@@ -23,7 +29,8 @@
 }
 
 .savings-transaction {
-
+    background: rgb(255, 224, 88);
+    background: linear-gradient(58deg, rgba(255,225,88,0.7) 20%, rgba(255,255,255,1) 13%, rgba(255,255,255,1) 100%);
 }
 
 .expense-transaction {
