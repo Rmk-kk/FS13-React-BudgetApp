@@ -5,7 +5,8 @@ import Header from "../Header/Header";
 import SavingsContent from "../Savings-content/SavingsContent";
 import TransactionsContent from "../Transactions-content/TransactionsContent";
 import ModalWindow from "../ModalWindow/ModalWindow";
-import Footer from "../Footer/Footer";
+import BalanceComponent from "../BalanceComponent/BalanceComponent";
+import PieChart from "../Pie-chart/PieChart";
 
 export interface listItem {
     amount: number,
@@ -153,7 +154,10 @@ const App = () => {
                 balance={balance}/>
         </Row>
         <hr/>
-        <Footer balance={balance}/>
+        <div className='footer-container'>
+            <BalanceComponent balance={balance}/>
+            <PieChart balance={balance}/>
+        </div>
         <ModalWindow
             handleModalWindow={handleModalWindow}
             show={show}

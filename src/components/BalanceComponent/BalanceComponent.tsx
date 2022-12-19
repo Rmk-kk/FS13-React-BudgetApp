@@ -5,7 +5,7 @@ import {Balance} from "../App/App";
 interface FooterProps {
     balance: Balance | null
 }
-const Footer = ({balance}:FooterProps) => {
+const BalanceComponent = ({balance}:FooterProps) => {
     const {savings, total} = balance!;
     return (
         <Card style={{ width: '18rem' }}>
@@ -18,4 +18,4 @@ const Footer = ({balance}:FooterProps) => {
     )
 }
 
-export default Footer
+export default BalanceComponent

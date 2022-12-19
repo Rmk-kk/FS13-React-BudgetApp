@@ -26,3 +26,18 @@ code {
 ul {
   margin: 0;
 }
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-container > .card {
+  margin: 0;
+}
+
+.footer-container .card:first-child {
+  margin-right: 50px;
+}
+
