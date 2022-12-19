@@ -23,6 +23,16 @@ const ModalWindow = (props:ModalWindowProps) => {
         }
     }
 
+    //inputValidations
+
+    const validateInput = (data:string, type:'amount' | 'source') => {
+        if(type === 'source' && data.match(/^[A-Za-z ,:]*$/)) {
+            setSource(data)
+        } else if(type === 'amount' && data.match(/^[0-9]*$/)) {
+            setAmount(Number(data))
+        }
+    }
+
     //send data to APP
     const buildDataFromForm = (e:FormEvent) => {
         const newTransaction = {type, date, source, amount, id: nextId()};
@@ -38,6 +48,8 @@ const ModalWindow = (props:ModalWindowProps) => {
         setDate(null);
         setType('');
     }
+
+
 
     return (
         <Modal
@@ -57,16 +69,20 @@ const ModalWindow = (props:ModalWindowProps) => {
                         <Form.Label>Amount</Form.Label>
                         <Form.Control type="text"
                                       required
+                                      value={amount}
                                       placeholder="Enter transaction amount"
-                                      onChange={(e) => setAmount(Number(e.currentTarget.value))}/>
+                                      onChange={(e) => {
+                                          validateInput(e.currentTarget.value, 'amount')
+                                      }}/>
                     </Form.Group>
                     {/*SOURCE*/}
                     <Form.Group className="mb-3" controlId="source">
                         <Form.Label>Source</Form.Label>
                         <Form.Control type="text"
                                       required
+                                      value={source}
                                       placeholder="Source of transaction"
-                                      onChange={(e) => setSource(e.currentTarget.value)}/>
+                                      onChange={(e) => {validateInput(e.currentTarget.value, 'source')}}/>
                     </Form.Group>
 
                     {/*AMOUNT*/}
