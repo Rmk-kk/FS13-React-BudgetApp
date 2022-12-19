@@ -5,10 +5,7 @@ import Header from "../Header/Header";
 import SavingsContent from "../Savings-content/SavingsContent";
 import TransactionsContent from "../Transactions-content/TransactionsContent";
 import ModalWindow from "../ModalWindow/ModalWindow";
-import nextId from "react-id-generator";
-import SavingsModal from "../Savings-modal/SavingsModal";
 import Footer from "../Footer/Footer";
-import {createContext} from "vm";
 
 export interface listItem {
     amount: number,
@@ -30,6 +27,7 @@ const App = () => {
     const [list, setList] = useState<listItem[]>([]);
     const [show, setShow] = useState<boolean>(false);
     const [filterInput, setFilterInput] = useState('');
+    const [radioFilter, setRadioFilter] = useState<string>('all');
     const [balance, setBalance] = useState<Balance>({income: 0, expense: 0, savings: 0, total: 0, target: 1000});
 
 
@@ -74,7 +72,6 @@ const App = () => {
 
     //validate transaction
     const validateTransaction = (data:listItem) => {
-        console.log(data)
         if(data.type === 'transfer' && data.amount > balance.total && data.amount > balance.savings) {
             console.log(`not enough money on balance`)
             return false
@@ -118,15 +115,40 @@ const App = () => {
 
     //Radio buttons logic
 
-    const filteredList = onFilterList(filterInput,list);
+    //update radio value
+
+    const onRadioUpdate = (value: string) => {
+        setRadioFilter(value);
+    }
+
+    //filter by radio button value
+    const onRadioFilter = (type:string, list:listItem[]) => {
+        if(type === 'all') {
+            return list
+        }
+        else if(type === 'income') {
+            return list.filter(item => {
+                return item.type === 'income'
+            })
+        }
+        else if(type === 'expense') {
+            return list.filter(item => {
+                return item.type === 'expense'
+            })
+        }
+    }
+
+    const filteredList = onRadioFilter(radioFilter, list);
+    const finalList = onFilterList(filterInput,filteredList!);
     return (
     <Container className="App">
       <Header
           handleModalWindow={handleModalWindow}
-          onFilterUpdate={onFilterUpdate}/>
+          onFilterUpdate={onFilterUpdate}
+          onRadioUpdate={onRadioUpdate}/>
         <Row>
             <TransactionsContent
-                list={filteredList}/>
+                list={finalList}/>
             <SavingsContent
                 setTargetSavings = {setTargetSavings}
                 handleForm={handleForm}

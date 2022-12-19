@@ -1,14 +1,20 @@
 import './header.css'
-import React from "react";
-import {Dropdown, Form, Button, DropdownButton, InputGroup} from "react-bootstrap";
+import React, {FormEvent, useEffect, useState} from "react";
+import { Form, Button, InputGroup} from "react-bootstrap";
 
 interface HeaderProps{
     handleModalWindow: (status:boolean) => void
     onFilterUpdate: (search:string) => void
+    onRadioUpdate: (value:string) => void
 }
 const Header = (props:HeaderProps) => {
+    const [value, setValue] = useState<string>('all');
+    const {handleModalWindow, onFilterUpdate, onRadioUpdate} = props;
 
-    const {handleModalWindow, onFilterUpdate} = props;
+    useEffect(() => {
+        onRadioUpdate(value)
+    }, [value])
+
 
     return (
         <div className={'header'}>
@@ -24,25 +30,31 @@ const Header = (props:HeaderProps) => {
                         aria-describedby="inputGroup-sizing-default"
                     />
                 </InputGroup>
-                <Form className='header_filter-wrap-radio'>
+                <Form noValidate className='header_filter-wrap-radio'>
                     <Form.Check
                         inline
                         label="All"
-                        name="group1"
+                        name="header-filter"
+                        value={'all'}
+                        onChange={(e)=> setValue(e.currentTarget.value)}
                         type={"radio"}
                         id={`inline-radio-1`}
                     />
                     <Form.Check
                         inline
                         label="Income"
-                        name="group1"
+                        name="header-filter"
+                        onChange={(e)=> setValue(e.currentTarget.value)}
+                        value={'income'}
                         type={"radio"}
                         id={`inline-radio-2`}
                     />
                     <Form.Check
                         inline
                         label="Expense"
-                        name="group1"
+                        name="header-filter"
+                        value={'expense'}
+                        onChange={(e)=> setValue(e.currentTarget.value)}
                         type={"radio"}
                         id={`inline-radio-3`}
                     />
