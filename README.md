@@ -25,6 +25,8 @@ Simple Budget App was created.
 * All the transactions can be deleted, until the balance will stay positive.
 * Money can be transferred from main balance to savings account
 * Target can be set up for savings accounts, dynamic bar will show progress
+* Dynamic filter by source, where you can find exact transaction you need
+* Radio buttons filter to show only income/expanse transactions
 * Pie Chart made with React D3 will show percentage of income,expense and savings based on your transactions.
 
 ## Project Structure
