@@ -14,10 +14,10 @@ import {Balance, listItem} from "../types and interfaces";
 const App = () => {
     const [list, setList] = useState<listItem[]>([]);
     const [show, setShow] = useState<boolean>(false);
-    const [changingItem, setChangingItem] = useState<listItem | undefined>(undefined);
     const [filterInput, setFilterInput] = useState('');
     const [radioFilter, setRadioFilter] = useState<string>('all');
     const [balance, setBalance] = useState<Balance>({income: 0, expense: 0, savings: 0, total: 0, target: 1000});
+
 
     useEffect(()=>{
         let income = 0,
@@ -118,14 +118,6 @@ const App = () => {
         console.log(id)
     }
 
-    //EDIT
-    const onItemChange = (id:string) => {
-        const item = list.find(item => item.id === id);
-        if(item) {
-            setChangingItem(item);
-            setShow(true)
-        }
-    }
 
     const filteredList = onRadioFilter(radioFilter, list);
     const finalList = onFilterList(filterInput,filteredList!);
@@ -140,8 +132,7 @@ const App = () => {
             <TransactionsContent
                 balance={balance}
                 onDelete={onDelete}
-                list={finalList}
-                onItemChange={onItemChange}/>
+                list={finalList}/>
             <SavingsContent
                 setTargetSavings = {setTargetSavings}
                 handleForm={handleForm}

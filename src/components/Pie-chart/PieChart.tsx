@@ -9,16 +9,39 @@ interface Data {
 }
 
 const PieChart = ({balance}:PieCharProps) => {
+    const [data, setData] = useState<Data[]>([])
     const svgRef = useRef(null);
 
-    let data: Data[] = [
-        { name: "Income", share: balance.income },
-        { name: "Savings", share: balance.savings },
-        { name: "Expenses", share: balance.expense },
-    ]
+    useEffect(() => {
+        setData(sortData(balance))
+    },[balance])
 
-    const names = data.map(item => item.name)
-    const shares = data.map(item => item.share)
+    useEffect(() => {
+        drawChart()
+    }, [data]);
+
+    const sortData = (balance:Balance) => {
+        let array = [];
+        if(balance.income > 0) {
+            array.push({name: "Income", share: balance.income});
+        }
+        if(balance.expense > 0) {
+            array.push({ name: "Expenses", share: balance.expense })
+        }
+        if(balance.savings > 0) {
+            array.push({ name: "Savings", share: balance.savings });
+        }
+        return array;
+    }
+
+
+    // let data: Data[] = [
+    //     { name: "Income", share: balance.income },
+    //     { name: "Savings", share: balance.savings },
+    //     { name: "Expenses", share: balance.expense },
+    // ]
+
+
 
     const drawChart = () => {
         d3.select(svgRef.current)
@@ -26,7 +49,7 @@ const PieChart = ({balance}:PieCharProps) => {
             .remove();
         const colorScale = d3
             .scaleSequential()
-            .interpolator(d3.interpolateCool)
+            .interpolator(d3.interpolateCividis)
             .domain([0, data.length]);
         const svg = d3
             .select(svgRef.current)
@@ -65,14 +88,13 @@ const PieChart = ({balance}:PieCharProps) => {
                 return `translate(${x}, ${y})`;
             });
     }
-    useEffect(() => {
-        drawChart()
-    }); // redraw chart if data changes
+     // redraw chart if data changes
 
 
     return (
         <Card style={{ width: '18rem' }}>
             <ListGroup variant="flush">
+                <h2 style={{fontSize : '18px', marginTop: '10px'}}>Your Pie Chart</h2>
                 <div ref={svgRef}></div>
             </ListGroup>
         </Card>

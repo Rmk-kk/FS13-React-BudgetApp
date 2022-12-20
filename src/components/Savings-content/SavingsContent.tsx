@@ -1,5 +1,5 @@
 import {Button, Card, Col, ProgressBar} from "react-bootstrap";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import SavingsModal from "../Savings-modal/SavingsModal";
 import {SavingsContentProps, SavingsType} from "../types and interfaces";
 
@@ -10,11 +10,11 @@ const SavingsContent = ({handleForm, balance, setTargetSavings}:SavingsContentPr
     const [savingsShow, setSavingsShow] = useState<boolean>(false);
     const [savingsModalType, setSavingsModalType] = useState<SavingsType>(null);
     const progress = Math.round(balance.savings/balance.target*100);
+
     const handleButtonClick = (type:SavingsType) => {
         setSavingsShow(true)
         setSavingsModalType(type);
     }
-
     return (
         <Col xs lg="4">
             <Card style={{ width: '18rem' }} className='savings-content'>

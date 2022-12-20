@@ -1,4 +1,4 @@
-import React, {FormEvent} from "react";
+import React, {FormEvent, useState} from "react";
 
 export interface listItem {
     amount: number,
@@ -40,13 +40,13 @@ export interface TransactionContentProps {
     list: listItem[],
     onDelete: (id: string) => void,
     balance: Balance,
-    onItemChange: (id: string) => void
 }
 
 export interface SavingsContentProps {
     handleForm: (e:FormEvent,data:listItem) => void,
     balance: Balance,
-    setTargetSavings: (amount:number) => void
+    setTargetSavings: (amount:number) => void,
+
 }
 
 

@@ -1,14 +1,19 @@
-import {FormEvent, useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import nextId from "react-id-generator";
 import {Button, Form, Modal} from "react-bootstrap";
 import {SavingsModalProps} from "../types and interfaces";
 
 
 
-const SavingsModal = ({setSavingsShow, savingsShow, savingsModalType, handleForm, type, setTargetSavings}:SavingsModalProps) => {
+const SavingsModal = ({setSavingsShow,
+                          savingsShow,
+                          savingsModalType,
+                          handleForm, type,
+                          setTargetSavings}:SavingsModalProps) => {
 
     const [amount, setAmount] = useState(0);
     const [date, setDate] = useState<Date | null>(null);
+
 
     //form Validation
     const validateForm = (e:FormEvent) => {
@@ -43,6 +48,8 @@ const SavingsModal = ({setSavingsShow, savingsShow, savingsModalType, handleForm
         setAmount(0);
         setDate(null);
     }
+
+
 
     return (
         <Modal
@@ -81,6 +88,7 @@ const SavingsModal = ({setSavingsShow, savingsShow, savingsModalType, handleForm
 
         </Modal>
     )
+
 
 }
 

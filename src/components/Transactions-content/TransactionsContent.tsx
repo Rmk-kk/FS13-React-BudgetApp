@@ -5,7 +5,7 @@ import {TransactionContentProps} from "../types and interfaces";
 
 
 
-const TransactionsContent = ({list, onDelete, balance, onItemChange}:TransactionContentProps) => {
+const TransactionsContent = ({list, onDelete, balance}:TransactionContentProps) => {
 
     const setDateState = (data: Date) => {
         const today = new Date(data);
@@ -35,16 +35,17 @@ const TransactionsContent = ({list, onDelete, balance, onItemChange}:Transaction
                 <div>Source: {source}</div>
                 <div>Date: {setDateState(date!)}</div>
                 <div>
-                    {/*<Button variant="outline-secondary"*/}
-                    {/*        size="sm"*/}
-                    {/*        style={{marginRight: '15px'}}*/}
-                    {/*        onClick={()=>onItemChange(id)}>*/}
-                    {/*    Edit</Button>*/}
+                    <Button variant="outline-secondary"
+                            size="sm"
+                            style={{marginRight: '15px'}}>
+                        Edit
+                    </Button>
                     <Button variant="secondary"
                             size="sm"
                             onClick={()=>onDelete(id)}
                             disabled={item.type === 'income' && balance.total - item.amount < 0}>
-                        Delete</Button>
+                        Delete
+                    </Button>
                 </div>
             </li>
         )
