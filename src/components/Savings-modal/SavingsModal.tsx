@@ -1,19 +1,11 @@
 import {FormEvent, useState} from "react";
 import nextId from "react-id-generator";
 import {Button, Form, Modal} from "react-bootstrap";
-import {SavingsType} from "../Savings-content/SavingsContent";
-import {listItem} from "../App/App";
+import {SavingsModalProps} from "../types and interfaces";
 
 
-interface SavingsModalProps {
-    savingsShow: boolean,
-    handleSavingsWindow: (status:boolean) => void,
-    savingsModalType: SavingsType,
-    handleForm: (e:FormEvent,data:listItem) => void,
-    type: 'target' | 'withdraw' | 'transfer' | null,
-    setTargetSavings: (amount:number) => void,
-}
-const SavingsModal = ({handleSavingsWindow, savingsShow, savingsModalType, handleForm, type, setTargetSavings}:SavingsModalProps) => {
+
+const SavingsModal = ({setSavingsShow, savingsShow, savingsModalType, handleForm, type, setTargetSavings}:SavingsModalProps) => {
 
     const [amount, setAmount] = useState(0);
     const [date, setDate] = useState<Date | null>(null);
@@ -27,6 +19,13 @@ const SavingsModal = ({handleSavingsWindow, savingsShow, savingsModalType, handl
         buildDataFromForm(e);
     }
 
+    //validate input
+    const validateInput = (data:string) => {
+        if(data.match(/^[0-9]*$/)){
+            setAmount(Number(data))
+        }
+    }
+
     //send data to APP
     const buildDataFromForm = (e:FormEvent) => {
         const newTransaction = {type, date: new Date(), source: 'savings', amount, id: nextId()};
@@ -35,7 +34,7 @@ const SavingsModal = ({handleSavingsWindow, savingsShow, savingsModalType, handl
         } else if(type ==='target') {
             setTargetSavings(amount)
         }
-        handleSavingsWindow(false)
+        setSavingsShow(false)
         resetStates();
     }
 
@@ -48,7 +47,7 @@ const SavingsModal = ({handleSavingsWindow, savingsShow, savingsModalType, handl
     return (
         <Modal
             show={savingsShow}
-            onHide={()=> handleSavingsWindow(false)}
+            onHide={()=> setSavingsShow(false)}
             backdrop="static"
             keyboard={false}
         >
@@ -63,12 +62,13 @@ const SavingsModal = ({handleSavingsWindow, savingsShow, savingsModalType, handl
                         <Form.Label>Amount</Form.Label>
                         <Form.Control type="text"
                                       required
+                                      value={amount}
                                       placeholder="Enter transaction amount"
-                                      onChange={(e) => setAmount(Number(e.currentTarget.value))}/>
+                                      onChange={(e) => validateInput(e.currentTarget.value)}/>
                     </Form.Group>
 
                     <Modal.Footer>
-                        <Button variant="outline-secondary" onClick={() => handleSavingsWindow(false)}>
+                        <Button variant="outline-secondary" onClick={() => setSavingsShow(false)}>
                             Close
                         </Button>
                         {(type === 'target') ?

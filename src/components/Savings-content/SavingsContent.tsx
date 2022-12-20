@@ -1,27 +1,17 @@
 import {Button, Card, Col, ProgressBar} from "react-bootstrap";
-import React, {FormEvent, useState} from "react";
-import './savings-content.css'
+import React, {useState} from "react";
 import SavingsModal from "../Savings-modal/SavingsModal";
-import {Balance, listItem} from "../App/App";
+import {SavingsContentProps, SavingsType} from "../types and interfaces";
 
-interface SavingsContentProps {
-    handleForm: (e:FormEvent,data:listItem) => void,
-    balance: Balance,
-    setTargetSavings: (amount:number) => void
-}
+import './savings-content.css'
 
-export type SavingsType = 'target' | 'withdraw' | 'transfer' | null;
 
 const SavingsContent = ({handleForm, balance, setTargetSavings}:SavingsContentProps) => {
     const [savingsShow, setSavingsShow] = useState<boolean>(false);
     const [savingsModalType, setSavingsModalType] = useState<SavingsType>(null);
-
-    const handleSavingsWindow = (status:boolean) => {
-        setSavingsShow(status)
-    }
-
+    const progress = Math.round(balance.savings/balance.target*100);
     const handleButtonClick = (type:SavingsType) => {
-        handleSavingsWindow(true)
+        setSavingsShow(true)
         setSavingsModalType(type);
     }
 
@@ -32,7 +22,7 @@ const SavingsContent = ({handleForm, balance, setTargetSavings}:SavingsContentPr
                     <Card.Title>Your Savings Account</Card.Title>
                     <Card.Text>Current savings: {balance.savings}</Card.Text>
                     <Card.Text>Target: {balance.target}$</Card.Text>
-                    <ProgressBar now={Math.round(balance.savings/balance.target*100)} />
+                    <ProgressBar now={progress} label={`${progress}%`}/>
                 </Card.Body>
                 <Card.Footer>
                     <Button variant="secondary" onClick={() => handleButtonClick('transfer') }>Transfer to savings</Button>
@@ -45,7 +35,7 @@ const SavingsContent = ({handleForm, balance, setTargetSavings}:SavingsContentPr
             </Card>
 
             <SavingsModal
-                handleSavingsWindow={handleSavingsWindow}
+                setSavingsShow={setSavingsShow}
                 setTargetSavings={setTargetSavings}
                 savingsShow={savingsShow}
                 savingsModalType={savingsModalType}

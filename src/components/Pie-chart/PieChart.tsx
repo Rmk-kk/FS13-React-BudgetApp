@@ -1,11 +1,9 @@
 import {Card, ListGroup} from "react-bootstrap";
 import { Chart } from "react-google-charts";
-import {Balance} from "../App/App";
 import {useEffect, useState} from "react";
+import {PieCharProps} from "../types and interfaces";
 
-interface PieCharProps {
-    balance: Balance
-}
+
 const PieChart = ({balance}:PieCharProps) => {
     const [data, setData] = useState([
         ["Total", "Hours per Day"],

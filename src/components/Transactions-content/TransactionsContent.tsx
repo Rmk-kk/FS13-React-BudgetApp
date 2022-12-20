@@ -1,13 +1,11 @@
 import './transactions-content.css'
-import {Col} from "react-bootstrap";
+import {Button, Col} from "react-bootstrap";
 import React from "react";
-import {listItem} from "../App/App";
+import {TransactionContentProps} from "../types and interfaces";
 
 
-interface TransactionContentProps {
-    list: listItem[]
-}
-const TransactionsContent = ({list}:TransactionContentProps) => {
+
+const TransactionsContent = ({list, onDelete, balance, onItemChange}:TransactionContentProps) => {
 
     const setDateState = (data: Date) => {
         const today = new Date(data);
@@ -29,12 +27,25 @@ const TransactionsContent = ({list}:TransactionContentProps) => {
         } else if(type ==='transfer' || type === 'withdraw') {
             clazz = 'savings-transaction'
         }
+
         return (
             <li className={`transaction_list-item ${clazz}`} key={id}>
                 <div>Amount: {amount} $</div>
                 <div>{type}</div>
                 <div>Source: {source}</div>
                 <div>Date: {setDateState(date!)}</div>
+                <div>
+                    <Button variant="outline-secondary"
+                            size="sm"
+                            style={{marginRight: '15px'}}
+                            onClick={()=>onItemChange(id)}>
+                        Edit</Button>
+                    <Button variant="secondary"
+                            size="sm"
+                            onClick={()=>onDelete(id)}
+                            disabled={item.type === 'income' && balance.total - item.amount < 0}>
+                        Delete</Button>
+                </div>
             </li>
         )
     })

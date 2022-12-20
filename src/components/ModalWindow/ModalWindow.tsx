@@ -1,19 +1,16 @@
 import {Button, Modal, Form} from "react-bootstrap";
-import {FormEvent, useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import nextId from "react-id-generator";
-import {listItem} from "../App/App";
+import {ModalWindowProps} from "../types and interfaces";
 
-interface ModalWindowProps {
-    handleModalWindow: (data:boolean) => void,
-    handleForm:(e:FormEvent, data:listItem) => void,
-    show: boolean,
-}
+
+
 const ModalWindow = (props:ModalWindowProps) => {
     const [amount, setAmount] = useState(0);
     const [source,setSource] = useState('');
     const [date, setDate] = useState<Date | null>(null);
     const [type,setType] = useState<string | null>(null);
-    const {handleModalWindow, handleForm, show} = props;
+    const {setShow, handleForm, show} = props;
 
     //form Validation
     const validateForm = (e:FormEvent) => {
@@ -24,7 +21,6 @@ const ModalWindow = (props:ModalWindowProps) => {
     }
 
     //inputValidations
-
     const validateInput = (data:string, type:'amount' | 'source') => {
         if(type === 'source' && data.match(/^[A-Za-z ,:]*$/)) {
             setSource(data)
@@ -37,7 +33,7 @@ const ModalWindow = (props:ModalWindowProps) => {
     const buildDataFromForm = (e:FormEvent) => {
         const newTransaction = {type, date, source, amount, id: nextId()};
         handleForm(e, newTransaction);
-        handleModalWindow(false)
+        setShow(false)
         resetStates();
     }
 
@@ -50,15 +46,14 @@ const ModalWindow = (props:ModalWindowProps) => {
     }
 
 
-
     return (
         <Modal
             show={show}
-            onHide={()=> handleModalWindow(false)}
+            onHide={()=> setShow(false)}
             backdrop="static"
             keyboard={false}
         >
-            <Modal.Header closeButton>
+            <Modal.Header>
                 <Modal.Title>New Transaction</Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -116,7 +111,10 @@ const ModalWindow = (props:ModalWindowProps) => {
 
                     </Form.Group>
                     <Modal.Footer>
-                        <Button variant="outline-secondary" onClick={() => handleModalWindow(false)}>
+                        <Button variant="outline-secondary" onClick={() => {
+                            setShow(false)
+                            resetStates()
+                        }}>
                             Close
                         </Button>
                         <Button variant="secondary" type='submit'>Add Transaction</Button>

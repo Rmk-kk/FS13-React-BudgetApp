@@ -7,37 +7,24 @@ import TransactionsContent from "../Transactions-content/TransactionsContent";
 import ModalWindow from "../ModalWindow/ModalWindow";
 import BalanceComponent from "../BalanceComponent/BalanceComponent";
 import PieChart from "../Pie-chart/PieChart";
+import {Balance, listItem} from "../types and interfaces";
 
-export interface listItem {
-    amount: number,
-    type: string | null,
-    id: string,
-    source: string,
-    date: Date | null
-}
 
-export interface Balance extends Object{
-    income: number,
-    expense: number,
-    savings: number,
-    total: number,
-    target: number
-}
 
 const App = () => {
     const [list, setList] = useState<listItem[]>([]);
     const [show, setShow] = useState<boolean>(false);
+    const [changingItem, setChangingItem] = useState<listItem | undefined>(undefined);
     const [filterInput, setFilterInput] = useState('');
     const [radioFilter, setRadioFilter] = useState<string>('all');
     const [balance, setBalance] = useState<Balance>({income: 0, expense: 0, savings: 0, total: 0, target: 1000});
-
 
     useEffect(()=>{
         let income = 0,
             expense = 0,
             savings = 0,
             total;
-        list.map(item => {
+        list.forEach(item => {
             if(item.type === 'income') {
                 income += item.amount;
             }
@@ -54,12 +41,6 @@ const App = () => {
         total = income - expense - savings;
         setBalance({income, total, savings, expense, target: balance.target});
     },[list])
-
-
-    //Modal window
-    const handleModalWindow = (status:boolean) => {
-        setShow(status);
-    }
 
     //New transactions form
     const handleForm = (e:FormEvent,data:listItem) => {
@@ -92,16 +73,15 @@ const App = () => {
         if(amount < 0) {
             return false
         }
-        setBalance({target: amount, total:balance.total,income: balance.income, savings: balance.savings, expense:balance.expense})
+        setBalance({target: amount,
+            total:balance.total,
+            income: balance.income,
+            savings: balance.savings,
+            expense:balance.expense
+        })
     }
 
     //FILTER LOGIC
-
-    //updateFilterInputstate
-    const onFilterUpdate = (search:string) => {
-        setFilterInput(search);
-    }
-
     //filterListByInput
     const onFilterList = (search:string, list:listItem[]) => {
         if(search.length === 0) {
@@ -111,13 +91,6 @@ const App = () => {
         return list.filter(item => {
             return item.source.toLowerCase().indexOf(search.toLowerCase()) > -1
         })
-    }
-
-    //Radio buttons logic
-
-    //update radio value
-    const onRadioUpdate = (value: string) => {
-        setRadioFilter(value);
     }
 
     //filter by radio button value
@@ -137,17 +110,38 @@ const App = () => {
         }
     }
 
+    //EDIT - DELETE logic
+    //DELETE
+    const onDelete = (id:string) => {
+        //disabled = {option === income && balance - item.amount < 0}
+        setList(prevList => prevList.filter(item => item.id !== id));
+        console.log(id)
+    }
+
+    //EDIT
+    const onItemChange = (id:string) => {
+        const item = list.find(item => item.id === id);
+        if(item) {
+            setChangingItem(item);
+            setShow(true)
+        }
+    }
+
     const filteredList = onRadioFilter(radioFilter, list);
     const finalList = onFilterList(filterInput,filteredList!);
+
     return (
     <Container className="App">
       <Header
-          handleModalWindow={handleModalWindow}
-          onFilterUpdate={onFilterUpdate}
-          onRadioUpdate={onRadioUpdate}/>
+          setShow={setShow}
+          setFilterInput={setFilterInput}
+          setRadioFilter={setRadioFilter}/>
         <Row>
             <TransactionsContent
-                list={finalList}/>
+                balance={balance}
+                onDelete={onDelete}
+                list={finalList}
+                onItemChange={onItemChange}/>
             <SavingsContent
                 setTargetSavings = {setTargetSavings}
                 handleForm={handleForm}
@@ -159,7 +153,7 @@ const App = () => {
             <PieChart balance={balance}/>
         </div>
         <ModalWindow
-            handleModalWindow={handleModalWindow}
+            setShow={setShow}
             show={show}
             handleForm={handleForm}
         />

@@ -1,18 +1,15 @@
 import './header.css'
-import React, {FormEvent, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Form, Button, InputGroup} from "react-bootstrap";
+import {HeaderProps} from "../types and interfaces";
 
-interface HeaderProps{
-    handleModalWindow: (status:boolean) => void
-    onFilterUpdate: (search:string) => void
-    onRadioUpdate: (value:string) => void
-}
+
 const Header = (props:HeaderProps) => {
     const [value, setValue] = useState<string>('all');
-    const {handleModalWindow, onFilterUpdate, onRadioUpdate} = props;
+    const {setShow, setFilterInput, setRadioFilter} = props;
 
     useEffect(() => {
-        onRadioUpdate(value)
+        setRadioFilter(value)
     }, [value])
 
 
@@ -25,7 +22,7 @@ const Header = (props:HeaderProps) => {
                         Search by Source
                     </InputGroup.Text>
                     <Form.Control
-                        onChange={(e)=>onFilterUpdate(e.currentTarget.value)}
+                        onChange={(e)=>setFilterInput(e.currentTarget.value)}
                         aria-label="Default"
                         aria-describedby="inputGroup-sizing-default"
                     />
@@ -62,7 +59,7 @@ const Header = (props:HeaderProps) => {
             </div>
 
             <div className="header_btn-wrap">
-                <Button variant="secondary" onClick={()=>handleModalWindow(true)}>Add Transaction</Button>
+                <Button variant="secondary" onClick={()=>setShow(true)}>Add Transaction</Button>
             </div>
         </div>
     )

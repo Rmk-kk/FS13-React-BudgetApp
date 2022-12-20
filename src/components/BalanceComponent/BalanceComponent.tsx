@@ -1,10 +1,9 @@
 import {Card, ListGroup} from "react-bootstrap";
-import {Balance} from "../App/App";
+import {FooterProps} from "../types and interfaces";
 
 
-interface FooterProps {
-    balance: Balance | null
-}
+
+
 const BalanceComponent = ({balance}:FooterProps) => {
     const {savings, total} = balance!;
     return (
