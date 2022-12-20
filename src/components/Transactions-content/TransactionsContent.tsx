@@ -35,11 +35,11 @@ const TransactionsContent = ({list, onDelete, balance, onItemChange}:Transaction
                 <div>Source: {source}</div>
                 <div>Date: {setDateState(date!)}</div>
                 <div>
-                    <Button variant="outline-secondary"
-                            size="sm"
-                            style={{marginRight: '15px'}}
-                            onClick={()=>onItemChange(id)}>
-                        Edit</Button>
+                    {/*<Button variant="outline-secondary"*/}
+                    {/*        size="sm"*/}
+                    {/*        style={{marginRight: '15px'}}*/}
+                    {/*        onClick={()=>onItemChange(id)}>*/}
+                    {/*    Edit</Button>*/}
                     <Button variant="secondary"
                             size="sm"
                             onClick={()=>onDelete(id)}
