@@ -1,5 +1,5 @@
 import {Button, Card, Col, ProgressBar} from "react-bootstrap";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import SavingsModal from "../Savings-modal/SavingsModal";
 import {SavingsContentProps, SavingsType} from "../types and interfaces";
 

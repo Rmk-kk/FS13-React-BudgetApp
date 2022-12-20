@@ -35,14 +35,6 @@ const PieChart = ({balance}:PieCharProps) => {
     }
 
 
-    // let data: Data[] = [
-    //     { name: "Income", share: balance.income },
-    //     { name: "Savings", share: balance.savings },
-    //     { name: "Expenses", share: balance.expense },
-    // ]
-
-
-
     const drawChart = () => {
         d3.select(svgRef.current)
             .select('svg')

@@ -79,6 +79,7 @@ Simple Budget App was created.
 
 ## Getting Started
 
+Website is deployed on Netlify and can [be viewed here](https://63a22eef3b696d29399fec24--whimsical-fox-89d771.netlify.app/) <br>
 Clone the repository from GitHub with `git clone `. <br>
 Check repository on `https://github.com/Rmk-kk/FS13-React-BudgetApp`
 
