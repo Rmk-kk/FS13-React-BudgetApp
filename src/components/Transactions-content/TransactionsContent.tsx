@@ -34,19 +34,12 @@ const TransactionsContent = ({list, onDelete, balance}:TransactionContentProps) 
                 <div>{type}</div>
                 <div>Source: {source}</div>
                 <div>Date: {setDateState(date!)}</div>
-                <div>
-                    <Button variant="outline-secondary"
-                            size="sm"
-                            style={{marginRight: '15px'}}>
-                        Edit
-                    </Button>
-                    <Button variant="secondary"
-                            size="sm"
-                            onClick={()=>onDelete(id)}
-                            disabled={item.type === 'income' && balance.total - item.amount < 0}>
-                        Delete
-                    </Button>
-                </div>
+                <Button variant="secondary"
+                        size="sm"
+                        onClick={()=>onDelete(id)}
+                        disabled={item.type === 'income' && balance.total - item.amount < 0}>
+                    Delete
+                </Button>
             </li>
         )
     })

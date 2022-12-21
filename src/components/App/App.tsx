@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useState} from 'react';
+import React, {createContext, FormEvent, useEffect, useState} from 'react';
 import './App.css';
 import {Container, Row} from "react-bootstrap";
 import Header from "../Header/Header";
@@ -9,8 +9,17 @@ import BalanceComponent from "../BalanceComponent/BalanceComponent";
 import PieChart from "../Pie-chart/PieChart";
 import {Balance, listItem} from "../types and interfaces";
 
+const BalanceContext = createContext<Balance>({
+    income: 0,
+    expense: 0,
+    savings: 0,
+    total: 0,
+    target: 1000
+})
 
+const {Provider, Consumer} = BalanceContext;
 
+console.log(BalanceContext)
 const App = () => {
     const [list, setList] = useState<listItem[]>([]);
     const [show, setShow] = useState<boolean>(false);
@@ -128,21 +137,23 @@ const App = () => {
           setShow={setShow}
           setFilterInput={setFilterInput}
           setRadioFilter={setRadioFilter}/>
-        <Row>
-            <TransactionsContent
-                balance={balance}
-                onDelete={onDelete}
-                list={finalList}/>
-            <SavingsContent
-                setTargetSavings = {setTargetSavings}
-                handleForm={handleForm}
-                balance={balance}/>
-        </Row>
-        <hr/>
-        <div className='footer-container'>
-            <BalanceComponent balance={balance}/>
-            <PieChart balance={balance}/>
-        </div>
+        <Provider value={balance}>
+            <Row>
+                <TransactionsContent
+                    balance={balance}
+                    onDelete={onDelete}
+                    list={finalList}/>
+                <SavingsContent
+                    setTargetSavings = {setTargetSavings}
+                    handleForm={handleForm}
+                    balance={balance}/>
+            </Row>
+            <hr/>
+            <div className='footer-container'>
+                <BalanceComponent balance={balance}/>
+                <PieChart balance={balance}/>
+            </div>
+        </Provider>
         <ModalWindow
             setShow={setShow}
             show={show}
@@ -153,3 +164,4 @@ const App = () => {
 }
 
 export default App;
+
