@@ -22,6 +22,7 @@ Simple Budget App was created.
   * Date 
   * Source
   * Amount
+* Input validations with RegExp, you can't enter letters in amount field, same as numbers in search field
 * All the transactions can be deleted, until the balance will stay positive.
 * Money can be transferred from main balance to savings account
 * Target can be set up for savings accounts, dynamic bar will show progress

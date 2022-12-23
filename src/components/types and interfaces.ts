@@ -1,4 +1,4 @@
-import React, {FormEvent, useState} from "react";
+import React, {FormEvent} from "react";
 
 export interface listItem {
     amount: number,
@@ -12,8 +12,7 @@ export interface Balance extends Object{
     income: number,
     expense: number,
     savings: number,
-    total: number,
-    target: number
+    total: number
 }
 
 export interface PieCharProps {
@@ -45,7 +44,6 @@ export interface TransactionContentProps {
 export interface SavingsContentProps {
     handleForm: (e:FormEvent,data:listItem) => void,
     balance: Balance,
-    setTargetSavings: (amount:number) => void,
 
 }
 

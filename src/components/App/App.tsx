@@ -9,23 +9,13 @@ import BalanceComponent from "../BalanceComponent/BalanceComponent";
 import PieChart from "../Pie-chart/PieChart";
 import {Balance, listItem} from "../types and interfaces";
 
-const BalanceContext = createContext<Balance>({
-    income: 0,
-    expense: 0,
-    savings: 0,
-    total: 0,
-    target: 1000
-})
 
-const {Provider, Consumer} = BalanceContext;
-
-console.log(BalanceContext)
 const App = () => {
     const [list, setList] = useState<listItem[]>([]);
     const [show, setShow] = useState<boolean>(false);
     const [filterInput, setFilterInput] = useState('');
     const [radioFilter, setRadioFilter] = useState<string>('all');
-    const [balance, setBalance] = useState<Balance>({income: 0, expense: 0, savings: 0, total: 0, target: 1000});
+    const [balance, setBalance] = useState<Balance>({income: 0, expense: 0, savings: 0, total: 0});
 
 
     useEffect(()=>{
@@ -48,7 +38,7 @@ const App = () => {
             }
         })
         total = income - expense - savings;
-        setBalance({income, total, savings, expense, target: balance.target});
+        setBalance({income, total, savings, expense});
     },[list])
 
     //New transactions form
@@ -70,25 +60,13 @@ const App = () => {
             console.log(`not enough money in savings`)
             return false
         }
-        else if(data.type === 'expense' && balance.income - balance.expense - data.amount < 0) {
+        else if(data.type === 'expense' && balance.total - balance.expense - data.amount < 0) {
             console.log(`not enough money for expense`)
             return false
         }
         return true
     }
 
-    //set target savings
-    const setTargetSavings = (amount:number) => {
-        if(amount < 0) {
-            return false
-        }
-        setBalance({target: amount,
-            total:balance.total,
-            income: balance.income,
-            savings: balance.savings,
-            expense:balance.expense
-        })
-    }
 
     //FILTER LOGIC
     //filterListByInput
@@ -137,14 +115,12 @@ const App = () => {
           setShow={setShow}
           setFilterInput={setFilterInput}
           setRadioFilter={setRadioFilter}/>
-        <Provider value={balance}>
             <Row>
                 <TransactionsContent
                     balance={balance}
                     onDelete={onDelete}
                     list={finalList}/>
                 <SavingsContent
-                    setTargetSavings = {setTargetSavings}
                     handleForm={handleForm}
                     balance={balance}/>
             </Row>
@@ -153,7 +129,6 @@ const App = () => {
                 <BalanceComponent balance={balance}/>
                 <PieChart balance={balance}/>
             </div>
-        </Provider>
         <ModalWindow
             setShow={setShow}
             show={show}

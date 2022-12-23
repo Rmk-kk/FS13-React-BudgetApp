@@ -43,6 +43,10 @@ const PieChart = ({balance}:PieCharProps) => {
             .scaleSequential()
             .interpolator(d3.interpolateCividis)
             .domain([0, data.length]);
+        const colorScaleText = d3
+            .scaleSequential()
+            .interpolator(d3.interpolateWarm)
+            .domain([0, data.length])
         const svg = d3
             .select(svgRef.current)
             .append('svg')
@@ -74,7 +78,7 @@ const PieChart = ({balance}:PieCharProps) => {
             .attr('text-anchor', 'middle')
             .attr('alignment-baseline', 'middle')
             .text((d) => d.data.name)
-            .style('fill', (_, i) => colorScale(data.length - i))
+            .style('fill', (_, i) => colorScaleText(data.length - i))
             .attr('transform', (d) => {
                 const [x, y] = arcGenerator.centroid(d);
                 return `translate(${x}, ${y})`;

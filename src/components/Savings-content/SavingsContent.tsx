@@ -6,22 +6,31 @@ import {SavingsContentProps, SavingsType} from "../types and interfaces";
 import './savings-content.css'
 
 
-const SavingsContent = ({handleForm, balance, setTargetSavings}:SavingsContentProps) => {
+const SavingsContent = ({handleForm, balance}:SavingsContentProps) => {
     const [savingsShow, setSavingsShow] = useState<boolean>(false);
+    const [target, setTarget] = useState<number>(1000)
     const [savingsModalType, setSavingsModalType] = useState<SavingsType>(null);
-    const progress = Math.round(balance.savings/balance.target*100);
+    const progress = Math.round(balance.savings/target*100);
 
     const handleButtonClick = (type:SavingsType) => {
         setSavingsShow(true)
         setSavingsModalType(type);
     }
+
+    const setTargetSavings = (amount:number) => {
+        if(amount < 0) {
+            return false
+        }
+        setTarget(amount);
+    }
+
     return (
         <Col xs lg="4">
             <Card style={{ width: '18rem' }} className='savings-content'>
                 <Card.Body>
                     <Card.Title>Your Savings Account</Card.Title>
                     <Card.Text>Current savings: {balance.savings}</Card.Text>
-                    <Card.Text>Target: {balance.target}$</Card.Text>
+                    <Card.Text>Target: {target}$</Card.Text>
                     <ProgressBar now={progress} label={`${progress}%`}/>
                 </Card.Body>
                 <Card.Footer>
