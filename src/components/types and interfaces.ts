@@ -1,4 +1,4 @@
-import React, {FormEvent, useState} from "react";
+import React, {FormEvent} from "react";
 
 export interface listItem {
     amount: number,
@@ -13,10 +13,6 @@ export interface Balance extends Object{
     expense: number,
     savings: number,
     total: number,
-}
-
-export interface PieCharProps {
-    balance: Balance
 }
 
 export interface ModalWindowProps {
@@ -36,13 +32,10 @@ export interface SavingsModalProps {
 export interface TransactionContentProps {
     list: listItem[],
     onDelete: (id: string) => void,
-    balance: Balance,
 }
 
 export interface SavingsContentProps {
     handleForm: (e:FormEvent,data:listItem) => void,
-    balance: Balance,
-
 }
 
 
@@ -51,9 +44,6 @@ export interface HeaderProps{
     setRadioFilter: React.Dispatch<React.SetStateAction<string>>
 }
 
-export interface FooterProps {
-    balance: Balance | null
-}
 
 export type SavingsType = 'target' | 'withdraw' | 'transfer' | null;
 

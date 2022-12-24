@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import { Form, Button, InputGroup} from "react-bootstrap";
 import {HeaderProps} from "../types and interfaces";
 import {useDispatch} from "react-redux";
-import {closeModal, openModal} from "../../redux/slices/modalReducer";
+import {openModal} from "../../redux/slices/modalReducer";
 
 
 const Header = (props:HeaderProps) => {

@@ -1,11 +1,13 @@
 import {Card, ListGroup} from "react-bootstrap";
-import {FooterProps} from "../types and interfaces";
+import {useAppSelector} from "../../hooks/reduxHook";
 
 
 
 
-const BalanceComponent = ({balance}:FooterProps) => {
-    const {savings, total} = balance!;
+const BalanceComponent = () => {
+    const balance = useAppSelector(state => state.balanceReducer)
+    const {total, savings} = balance;
+
     return (
         <Card style={{ width: '18rem' }}>
             <ListGroup variant="flush">

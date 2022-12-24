@@ -1,15 +1,17 @@
 import {Card, ListGroup} from "react-bootstrap";
 import {useEffect, useRef , useState} from "react";
-import {Balance, PieCharProps} from "../types and interfaces";
+import {Balance} from "../types and interfaces";
 import * as d3 from "d3"
+import {useAppSelector} from "../../hooks/reduxHook";
 
 interface Data {
     name: string,
     share: number
 }
 
-const PieChart = ({balance}:PieCharProps) => {
+const PieChart = () => {
     const [data, setData] = useState<Data[]>([]);
+    const balance = useAppSelector(state => state.balanceReducer)
 
     const svgRef = useRef(null);
 

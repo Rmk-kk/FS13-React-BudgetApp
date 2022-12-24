@@ -2,10 +2,13 @@ import './transactions-content.css'
 import {Button, Col} from "react-bootstrap";
 import React from "react";
 import {TransactionContentProps} from "../types and interfaces";
+import {useAppSelector} from "../../hooks/reduxHook";
 
 
 
-const TransactionsContent = ({list, onDelete, balance}:TransactionContentProps) => {
+const TransactionsContent = ({list, onDelete}:TransactionContentProps) => {
+
+    const balance = useAppSelector(state => state.balanceReducer)
 
     const setDateState = (data: Date) => {
         const today = new Date(data);

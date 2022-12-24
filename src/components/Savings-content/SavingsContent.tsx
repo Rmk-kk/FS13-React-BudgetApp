@@ -4,10 +4,12 @@ import SavingsModal from "../Savings-modal/SavingsModal";
 import {SavingsContentProps, SavingsType} from "../types and interfaces";
 
 import './savings-content.css'
+import {useAppSelector} from "../../hooks/reduxHook";
 
 
-const SavingsContent = ({handleForm, balance}:SavingsContentProps) => {
+const SavingsContent = ({handleForm}:SavingsContentProps) => {
     const [savingsShow, setSavingsShow] = useState<boolean>(false);
+    const balance = useAppSelector(state => state.balanceReducer);
     const [target, setTarget] = useState<number>(1000)
     const [savingsModalType, setSavingsModalType] = useState<SavingsType>(null);
     const progress = Math.round(balance.savings/target*100);

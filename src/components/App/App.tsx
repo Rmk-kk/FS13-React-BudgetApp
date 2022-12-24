@@ -1,4 +1,4 @@
-import React, {createContext, FormEvent, useEffect, useState} from 'react';
+import React, {FormEvent, useEffect, useState} from 'react';
 import './App.css';
 import {Container, Row} from "react-bootstrap";
 import Header from "../Header/Header";
@@ -7,41 +7,23 @@ import TransactionsContent from "../Transactions-content/TransactionsContent";
 import ModalWindow from "../ModalWindow/ModalWindow";
 import BalanceComponent from "../BalanceComponent/BalanceComponent";
 import PieChart from "../Pie-chart/PieChart";
-import {Balance, listItem} from "../types and interfaces";
+import {listItem} from "../types and interfaces";
 import {useDispatch} from "react-redux";
 import {addTransaction, removeTransaction} from "../../redux/slices/listReducer";
 import {useAppSelector} from "../../hooks/reduxHook";
+import  {calculateBalance} from "../../redux/slices/balanceSlice";
 
 
 const App = () => {
     const list =useAppSelector(state => state.listReducer);
+    const balance = useAppSelector(state => state.balanceReducer)
     const dispatch = useDispatch();
     const [filterInput, setFilterInput] = useState('');
     const [radioFilter, setRadioFilter] = useState<string>('all');
-    const [balance, setBalance] = useState<Balance>({income: 0, expense: 0, savings: 0, total: 0});
 
 
     useEffect(()=>{
-        let income = 0,
-            expense = 0,
-            savings = 0,
-            total;
-        list.forEach(item => {
-            if(item.type === 'income') {
-                income += item.amount;
-            }
-            else if(item.type === 'expense') {
-                expense += item.amount;
-            }
-            else if(item.type === 'transfer') {
-                savings += item.amount;
-            }
-            else if(item.type === 'withdraw') {
-                savings -= item.amount;
-            }
-        })
-        total = income - expense - savings;
-        setBalance({income, total, savings, expense});
+        dispatch(calculateBalance(list))
     },[list])
 
     //New transactions form
@@ -118,17 +100,15 @@ const App = () => {
           setRadioFilter={setRadioFilter}/>
             <Row>
                 <TransactionsContent
-                    balance={balance}
                     onDelete={onDelete}
                     list={finalList}/>
                 <SavingsContent
-                    handleForm={handleForm}
-                    balance={balance}/>
+                    handleForm={handleForm}/>
             </Row>
             <hr/>
             <div className='footer-container'>
-                <BalanceComponent balance={balance}/>
-                <PieChart balance={balance}/>
+                <BalanceComponent/>
+                <PieChart/>
             </div>
         <ModalWindow
             handleForm={handleForm}

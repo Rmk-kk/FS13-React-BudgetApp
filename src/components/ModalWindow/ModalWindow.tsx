@@ -1,5 +1,5 @@
 import {Button, Modal, Form} from "react-bootstrap";
-import {FormEvent, useEffect, useState} from "react";
+import {FormEvent, useState} from "react";
 import nextId from "react-id-generator";
 import {ModalWindowProps} from "../types and interfaces";
 import {useAppSelector} from "../../hooks/reduxHook";
