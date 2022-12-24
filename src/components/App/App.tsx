@@ -82,14 +82,6 @@ const App = () => {
         }
     }
 
-    //EDIT - DELETE logic
-    //DELETE
-    const onDelete = (id:string) => {
-        //disabled = {option === income && balance - item.amount < 0}
-        dispatch(removeTransaction(id))
-    }
-
-
     const filteredList = onRadioFilter(radioFilter, list);
     const finalList = onFilterList(filterInput,filteredList!);
 
@@ -100,7 +92,6 @@ const App = () => {
           setRadioFilter={setRadioFilter}/>
             <Row>
                 <TransactionsContent
-                    onDelete={onDelete}
                     list={finalList}/>
                 <SavingsContent
                     handleForm={handleForm}/>

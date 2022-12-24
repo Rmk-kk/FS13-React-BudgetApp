@@ -5,7 +5,7 @@ export interface listItem {
     type: string | null,
     id: string,
     source: string,
-    date: Date | null
+    date: string | null
 }
 
 export interface Balance extends Object{
@@ -31,7 +31,6 @@ export interface SavingsModalProps {
 
 export interface TransactionContentProps {
     list: listItem[],
-    onDelete: (id: string) => void,
 }
 
 export interface SavingsContentProps {

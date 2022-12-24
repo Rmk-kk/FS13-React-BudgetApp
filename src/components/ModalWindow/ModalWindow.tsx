@@ -5,6 +5,8 @@ import {ModalWindowProps} from "../types and interfaces";
 import {useAppSelector} from "../../hooks/reduxHook";
 import {useDispatch} from "react-redux";
 import {closeModal} from "../../redux/slices/modalReducer";
+import useCreateDate from "../../hooks/dateHook";
+import createDate from "../../hooks/dateHook";
 
 
 
@@ -36,7 +38,8 @@ const ModalWindow = (props:ModalWindowProps) => {
 
     //send data to APP
     const buildDataFromForm = (e:FormEvent) => {
-        const newTransaction = {type, date, source, amount, id: nextId()};
+        const newDate = createDate(date!)
+        const newTransaction = {type, date: newDate, source, amount, id: nextId()};
         handleForm(e, newTransaction);
         dispatch(closeModal(false))
         resetStates();

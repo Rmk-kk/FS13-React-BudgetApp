@@ -2,6 +2,7 @@ import {FormEvent, useState} from "react";
 import nextId from "react-id-generator";
 import {Button, Form, Modal} from "react-bootstrap";
 import {SavingsModalProps} from "../types and interfaces";
+import createDate from "../../hooks/dateHook";
 
 
 
@@ -13,14 +14,6 @@ const SavingsModal = ({setSavingsShow,
 
     const [amount, setAmount] = useState(0);
 
-    //form Validation
-    const validateForm = (e:FormEvent) => {
-        e.preventDefault();
-        // if(date && amount > 0 && type !== null && amount) {
-        //     buildDataFromForm(e);
-        // }
-        buildDataFromForm(e);
-    }
 
     //validate input
     const validateInput = (data:string) => {
@@ -31,7 +24,9 @@ const SavingsModal = ({setSavingsShow,
 
     //send data to APP
     const buildDataFromForm = (e:FormEvent) => {
-        const newTransaction = {type, date: new Date(), source: 'savings', amount, id: nextId()};
+        e.preventDefault();
+        const newDate = createDate(new Date());
+        const newTransaction = {type, date: newDate, source: 'savings', amount, id: nextId()};
         if(type === 'withdraw' || type === 'transfer') {
             handleForm(e, newTransaction);
         } else if(type ==='target') {
@@ -59,7 +54,7 @@ const SavingsModal = ({setSavingsShow,
                 <Modal.Title>New {savingsModalType}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={(e) => validateForm(e)}>
+                <Form onSubmit={(e) => buildDataFromForm(e)}>
 
                     {/*AMOUNT*/}
                     <Form.Group className="mb-3" controlId="amount">
