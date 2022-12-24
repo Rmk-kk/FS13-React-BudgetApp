@@ -8,11 +8,14 @@ import ModalWindow from "../ModalWindow/ModalWindow";
 import BalanceComponent from "../BalanceComponent/BalanceComponent";
 import PieChart from "../Pie-chart/PieChart";
 import {Balance, listItem} from "../types and interfaces";
+import {useDispatch} from "react-redux";
+import {addTransaction, removeTransaction} from "../../redux/slices/listReducer";
+import {useAppSelector} from "../../hooks/reduxHook";
 
 
 const App = () => {
-    const [list, setList] = useState<listItem[]>([]);
-    const [show, setShow] = useState<boolean>(false);
+    const list =useAppSelector(state => state.listReducer);
+    const dispatch = useDispatch();
     const [filterInput, setFilterInput] = useState('');
     const [radioFilter, setRadioFilter] = useState<string>('all');
     const [balance, setBalance] = useState<Balance>({income: 0, expense: 0, savings: 0, total: 0});
@@ -46,7 +49,7 @@ const App = () => {
         e.preventDefault();
         e.stopPropagation();
         if(validateTransaction(data)) {
-            setList([...list, data])
+            dispatch(addTransaction(data))
         }
     }
 
@@ -101,8 +104,7 @@ const App = () => {
     //DELETE
     const onDelete = (id:string) => {
         //disabled = {option === income && balance - item.amount < 0}
-        setList(prevList => prevList.filter(item => item.id !== id));
-        console.log(id)
+        dispatch(removeTransaction(id))
     }
 
 
@@ -112,7 +114,6 @@ const App = () => {
     return (
     <Container className="App">
       <Header
-          setShow={setShow}
           setFilterInput={setFilterInput}
           setRadioFilter={setRadioFilter}/>
             <Row>
@@ -130,8 +131,6 @@ const App = () => {
                 <PieChart balance={balance}/>
             </div>
         <ModalWindow
-            setShow={setShow}
-            show={show}
             handleForm={handleForm}
         />
     </Container>

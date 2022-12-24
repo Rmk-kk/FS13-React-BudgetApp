@@ -9,7 +9,8 @@ interface Data {
 }
 
 const PieChart = ({balance}:PieCharProps) => {
-    const [data, setData] = useState<Data[]>([])
+    const [data, setData] = useState<Data[]>([]);
+
     const svgRef = useRef(null);
 
     useEffect(() => {

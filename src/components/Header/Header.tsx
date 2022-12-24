@@ -2,11 +2,14 @@ import './header.css'
 import React, {useEffect, useState} from "react";
 import { Form, Button, InputGroup} from "react-bootstrap";
 import {HeaderProps} from "../types and interfaces";
+import {useDispatch} from "react-redux";
+import {closeModal, openModal} from "../../redux/slices/modalReducer";
 
 
 const Header = (props:HeaderProps) => {
     const [value, setValue] = useState<string>('all');
-    const {setShow, setFilterInput, setRadioFilter} = props;
+    const {setFilterInput, setRadioFilter} = props;
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setRadioFilter(value)
@@ -59,7 +62,7 @@ const Header = (props:HeaderProps) => {
             </div>
 
             <div className="header_btn-wrap">
-                <Button variant="secondary" onClick={()=>setShow(true)}>Add Transaction</Button>
+                <Button variant="secondary" onClick={() => dispatch(openModal(true))}>Add Transaction</Button>
             </div>
         </div>
     )

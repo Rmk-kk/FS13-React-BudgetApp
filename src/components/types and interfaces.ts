@@ -1,4 +1,4 @@
-import React, {FormEvent} from "react";
+import React, {FormEvent, useState} from "react";
 
 export interface listItem {
     amount: number,
@@ -12,7 +12,7 @@ export interface Balance extends Object{
     income: number,
     expense: number,
     savings: number,
-    total: number
+    total: number,
 }
 
 export interface PieCharProps {
@@ -20,9 +20,7 @@ export interface PieCharProps {
 }
 
 export interface ModalWindowProps {
-    setShow: React.Dispatch<React.SetStateAction<boolean>>,
     handleForm:(e:FormEvent, data:listItem) => void,
-    show: boolean,
 
 }
 
@@ -49,7 +47,6 @@ export interface SavingsContentProps {
 
 
 export interface HeaderProps{
-    setShow: React.Dispatch<React.SetStateAction<boolean>>
     setFilterInput: React.Dispatch<React.SetStateAction<string>>
     setRadioFilter: React.Dispatch<React.SetStateAction<string>>
 }

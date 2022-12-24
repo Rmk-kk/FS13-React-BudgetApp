@@ -2,15 +2,20 @@ import {Button, Modal, Form} from "react-bootstrap";
 import {FormEvent, useEffect, useState} from "react";
 import nextId from "react-id-generator";
 import {ModalWindowProps} from "../types and interfaces";
+import {useAppSelector} from "../../hooks/reduxHook";
+import {useDispatch} from "react-redux";
+import {closeModal} from "../../redux/slices/modalReducer";
 
 
 
 const ModalWindow = (props:ModalWindowProps) => {
     const [amount, setAmount] = useState(0);
+    const modalShow = useAppSelector(state => state.modalReducer);
+    const dispatch = useDispatch();
     const [source,setSource] = useState('');
     const [date, setDate] = useState<Date | null>(null);
     const [type,setType] = useState<string | null>(null);
-    const {setShow, handleForm, show} = props;
+    const {handleForm} = props;
 
     //form Validation
     const validateForm = (e:FormEvent) => {
@@ -33,7 +38,7 @@ const ModalWindow = (props:ModalWindowProps) => {
     const buildDataFromForm = (e:FormEvent) => {
         const newTransaction = {type, date, source, amount, id: nextId()};
         handleForm(e, newTransaction);
-        setShow(false)
+        dispatch(closeModal(false))
         resetStates();
     }
 
@@ -48,8 +53,8 @@ const ModalWindow = (props:ModalWindowProps) => {
 
     return (
         <Modal
-            show={show}
-            onHide={()=> setShow(false)}
+            show={modalShow}
+            onHide={()=> dispatch(closeModal(false))}
             backdrop="static"
             keyboard={false}
         >
@@ -112,7 +117,7 @@ const ModalWindow = (props:ModalWindowProps) => {
                     </Form.Group>
                     <Modal.Footer>
                         <Button variant="outline-secondary" onClick={() => {
-                            setShow(false)
+                            dispatch(closeModal(false))
                             resetStates()
                         }}>
                             Close
