@@ -19,6 +19,10 @@ const listSlice = createSlice({
                 }
                 return item
             })
+        },
+        resetTarget: (state) => {
+            state = state.filter(item => item.type !== 'transfer');
+            return state
         }
     }
 })
@@ -26,4 +30,4 @@ const listSlice = createSlice({
 const listReducer = listSlice.reducer;
 export default listReducer;
 
-export const {addTransaction, removeTransaction, editTransaction} = listSlice.actions
+export const {addTransaction, removeTransaction, editTransaction, resetTarget} = listSlice.actions

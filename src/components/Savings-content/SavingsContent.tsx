@@ -5,11 +5,14 @@ import {SavingsContentProps, SavingsType} from "../types and interfaces";
 
 import './savings-content.css'
 import {useAppSelector} from "../../hooks/reduxHook";
+import {useDispatch} from "react-redux";
+import {resetTarget} from "../../redux/slices/listReducer";
 
 
 const SavingsContent = ({handleForm}:SavingsContentProps) => {
     const [savingsShow, setSavingsShow] = useState<boolean>(false);
     const balance = useAppSelector(state => state.balanceReducer);
+    const dispatch = useDispatch();
     const [target, setTarget] = useState<number>(1000)
     const [savingsModalType, setSavingsModalType] = useState<SavingsType>(null);
     const progress = Math.round(balance.savings/target*100);
@@ -23,8 +26,10 @@ const SavingsContent = ({handleForm}:SavingsContentProps) => {
         if(amount < 0) {
             return false
         }
+        dispatch(resetTarget());
         setTarget(amount);
     }
+
 
     return (
         <Col xs lg="4">
