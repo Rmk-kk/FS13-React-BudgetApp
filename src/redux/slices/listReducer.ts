@@ -11,6 +11,14 @@ const listSlice = createSlice({
         },
         removeTransaction: (state, action) => {
             return state.filter(item => item.id !== action.payload)
+        },
+        editTransaction: (state, action) => {
+            return state.map(item => {
+                if(item.id === action.payload.id) {
+                    return action.payload
+                }
+                return item
+            })
         }
     }
 })
@@ -18,4 +26,4 @@ const listSlice = createSlice({
 const listReducer = listSlice.reducer;
 export default listReducer;
 
-export const {addTransaction, removeTransaction} = listSlice.actions
+export const {addTransaction, removeTransaction, editTransaction} = listSlice.actions

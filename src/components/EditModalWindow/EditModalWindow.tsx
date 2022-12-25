@@ -1,32 +1,44 @@
-import {Button, Modal, Form} from "react-bootstrap";
-import {FormEvent, useState} from "react";
-import nextId from "react-id-generator";
-import {ModalWindowProps} from "../types and interfaces";
+import {Button, Form, Modal} from "react-bootstrap";
+import {FormEvent, useEffect, useState} from "react";
 import {useAppSelector} from "../../hooks/reduxHook";
-import {useDispatch} from "react-redux";
-import {closeModal} from "../../redux/slices/modalReducer";
 import createDate from "../../service/createDateFunction";
+import {EditModalProps, listItem} from "../types and interfaces";
+import {useDispatch} from "react-redux";
+import {editTransaction} from "../../redux/slices/listReducer";
 
-
-
-const ModalWindow = (props:ModalWindowProps) => {
-    const [amount, setAmount] = useState(0);
-    const modalShow = useAppSelector(state => state.modalReducer);
+const EditModalWindow = (props:EditModalProps) => {
+    const list =useAppSelector(state => state.listReducer);
+    const balance = useAppSelector(state => state.balanceReducer)
     const dispatch = useDispatch();
+    const [transaction, setTransaction] = useState<listItem | null>(null);
+    const [amount, setAmount] = useState(0);
     const [source,setSource] = useState('');
     const [date, setDate] = useState<Date | null>(null);
-    const [type,setType] = useState<string | null>(null);
-    const {handleForm} = props;
+    const {edit, setEdit, transactionId} = props;
 
-    //form Validation
+    useEffect(() => {
+        const item = list.find(item => item.id === transactionId);
+        if(item) {
+            setTransaction(item);
+            setAmount(item.amount);
+            setSource(item.source);
+        }
+    }, [transactionId])
+
     const validateForm = (e:FormEvent) => {
         e.preventDefault();
-        if(date && source && amount > 0 && type !== null && amount) {
-            buildDataFromForm(e);
+        if(transaction && amount > 0 && source && date) {
+            const newTransaction = {id: transaction.id, amount, type: transaction.type, date: createDate(date) , source};
+            if(balance.total - newTransaction.amount >= 0) {
+                dispatch(editTransaction(newTransaction));
+                setEdit(false)
+            } else {
+                console.log('Balance cannot go below zero')
+            }
         }
     }
 
-    //inputValidations
+
     const validateInput = (data:string, type:'amount' | 'source') => {
         if(type === 'source' && data.match(/^[A-Za-z ,:]*$/)) {
             setSource(data)
@@ -35,33 +47,15 @@ const ModalWindow = (props:ModalWindowProps) => {
         }
     }
 
-    //send data to APP
-    const buildDataFromForm = (e:FormEvent) => {
-        const newDate = createDate(date!)
-        const newTransaction = {type, date: newDate, source, amount, id: nextId()};
-        handleForm(e, newTransaction);
-        dispatch(closeModal(false))
-        resetStates();
-    }
-
-    //Reset States
-    const resetStates = () => {
-        setAmount(0);
-        setSource('');
-        setDate(null);
-        setType('');
-    }
-
-
     return (
         <Modal
-            show={modalShow}
-            onHide={()=> dispatch(closeModal(false))}
+            show={edit}
+            onHide={()=> setEdit(false)}
             backdrop="static"
             keyboard={false}
         >
             <Modal.Header>
-                <Modal.Title>New Transaction</Modal.Title>
+                <Modal.Title>Edit Transaction</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={(e) => validateForm(e)}>
@@ -87,7 +81,7 @@ const ModalWindow = (props:ModalWindowProps) => {
                                       onChange={(e) => {validateInput(e.currentTarget.value, 'source')}}/>
                     </Form.Group>
 
-                    {/*AMOUNT*/}
+                    {/*Date*/}
                     <Form.Group className="mb-3" controlId="amount">
                         <Form.Label>Date</Form.Label>
                         <Form.Control type="date"
@@ -95,43 +89,18 @@ const ModalWindow = (props:ModalWindowProps) => {
                                       onChange={(e) => setDate(new Date(e.currentTarget.value))}/>
                     </Form.Group>
 
-                    {/*TYPE*/}
-                    <Form.Group className="mb-3" controlId="checkbox">
-                        <Form.Check
-                            inline
-                            label="Income"
-                            name="group1"
-                            type='radio'
-                            value='income'
-                            id={`inline-radio-1`}
-                            onChange={(e) => setType(e.currentTarget.value)}
-                        />
-                        <Form.Check
-                            inline
-                            label="Expense"
-                            value='expense'
-                            name="group1"
-                            type='radio'
-                            id={`inline-radio-2`}
-                            onChange={(e) => setType(e.currentTarget.value)}
-                        />
-
-                    </Form.Group>
                     <Modal.Footer>
                         <Button variant="outline-secondary" onClick={() => {
-                            dispatch(closeModal(false))
-                            resetStates()
+                            setEdit(false)
                         }}>
                             Close
                         </Button>
-                        <Button variant="secondary" type='submit'>Add Transaction</Button>
+                        <Button variant="secondary" type='submit'>Edit Transaction</Button>
                     </Modal.Footer>
                 </Form>
             </Modal.Body>
-
         </Modal>
     )
-
 }
 
-export default ModalWindow;
+export default EditModalWindow;

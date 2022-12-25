@@ -43,6 +43,11 @@ export interface HeaderProps{
     setRadioFilter: React.Dispatch<React.SetStateAction<string>>
 }
 
+export interface EditModalProps {
+    edit: boolean,
+    setEdit: React.Dispatch<React.SetStateAction<boolean>>,
+    transactionId: string
+}
 
 export type SavingsType = 'target' | 'withdraw' | 'transfer' | null;
 

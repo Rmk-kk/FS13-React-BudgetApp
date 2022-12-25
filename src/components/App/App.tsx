@@ -9,7 +9,7 @@ import BalanceComponent from "../BalanceComponent/BalanceComponent";
 import PieChart from "../Pie-chart/PieChart";
 import {listItem} from "../types and interfaces";
 import {useDispatch} from "react-redux";
-import {addTransaction, removeTransaction} from "../../redux/slices/listReducer";
+import {addTransaction} from "../../redux/slices/listReducer";
 import {useAppSelector} from "../../hooks/reduxHook";
 import  {calculateBalance} from "../../redux/slices/balanceSlice";
 
@@ -24,6 +24,7 @@ const App = () => {
 
     useEffect(()=>{
         dispatch(calculateBalance(list))
+        console.log(list)
     },[list])
 
     //New transactions form

@@ -2,7 +2,7 @@ import {FormEvent, useState} from "react";
 import nextId from "react-id-generator";
 import {Button, Form, Modal} from "react-bootstrap";
 import {SavingsModalProps} from "../types and interfaces";
-import createDate from "../../hooks/dateHook";
+import createDate from "../../service/createDateFunction";
 
 
 
