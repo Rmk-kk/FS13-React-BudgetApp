@@ -1,4 +1,5 @@
 import './transactions-content.css'
+
 import {Button, Col} from "react-bootstrap";
 import React, {useRef, useState} from "react";
 import { TransactionContentProps} from "../types and interfaces";

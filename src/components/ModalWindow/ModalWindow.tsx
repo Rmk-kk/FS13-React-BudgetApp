@@ -1,3 +1,5 @@
+import './modal.css'
+
 import {Button, Modal, Form} from "react-bootstrap";
 import {FormEvent, useState} from "react";
 import nextId from "react-id-generator";
@@ -11,16 +13,33 @@ import createDate from "../../service/createDateFunction";
 
 const ModalWindow = (props:ModalWindowProps) => {
     const [amount, setAmount] = useState(0);
-    const modalShow = useAppSelector(state => state.modalReducer);
-    const dispatch = useDispatch();
     const [source,setSource] = useState('');
     const [date, setDate] = useState<Date | null>(null);
     const [type,setType] = useState<string | null>(null);
+
+    //validation props
+    const [dateError, setDateError] = useState(false);
+    const [amountError, setAmountError] = useState(false);
+    const [sourceError,setSourceError] = useState(false);
+
+    //REDUX
+    const modalShow = useAppSelector(state => state.modalReducer);
+    const dispatch = useDispatch();
     const {handleForm} = props;
 
     //form Validation
     const validateForm = (e:FormEvent) => {
         e.preventDefault();
+        if(!date) {
+            setDateError(true);
+        }
+        if(!source) {
+            setSourceError(true)
+        }
+        if(!amount || amount <= 0) {
+            setAmountError(true)
+        }
+
         if(date && source && amount > 0 && type !== null && amount) {
             buildDataFromForm(e);
         }
@@ -75,16 +94,21 @@ const ModalWindow = (props:ModalWindowProps) => {
                                       placeholder="Enter transaction amount"
                                       onChange={(e) => {
                                           validateInput(e.currentTarget.value, 'amount')
+                                          setAmountError(false)
                                       }}/>
+                        {amountError && <p className='modal-error_message'>Amount must be greater than 0</p>}
                     </Form.Group>
                     {/*SOURCE*/}
                     <Form.Group className="mb-3" controlId="source">
                         <Form.Label>Source</Form.Label>
                         <Form.Control type="text"
-                                      required
                                       value={source}
                                       placeholder="Source of transaction"
-                                      onChange={(e) => {validateInput(e.currentTarget.value, 'source')}}/>
+                                      onChange={(e) => {
+                                          validateInput(e.currentTarget.value, 'source')
+                                          setSourceError(false);
+                                      }}/>
+                        {sourceError && <p className='modal-error_message'>Enter valid transaction source</p>}
                     </Form.Group>
 
                     {/*AMOUNT*/}
@@ -92,7 +116,11 @@ const ModalWindow = (props:ModalWindowProps) => {
                         <Form.Label>Date</Form.Label>
                         <Form.Control type="date"
                                       placeholder="Enter date"
-                                      onChange={(e) => setDate(new Date(e.currentTarget.value))}/>
+                                      onChange={(e) => {
+                                setDate(new Date(e.currentTarget.value))
+                                setDateError(false)
+                            }}/>
+                        {dateError && <p className='modal-error_message'>Enter valid date</p>}
                     </Form.Group>
 
                     {/*TYPE*/}

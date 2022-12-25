@@ -24,7 +24,6 @@ const App = () => {
 
     useEffect(()=>{
         dispatch(calculateBalance(list))
-        console.log(list)
     },[list])
 
     //New transactions form

@@ -13,7 +13,7 @@ const SavingsContent = ({handleForm}:SavingsContentProps) => {
     const [savingsShow, setSavingsShow] = useState<boolean>(false);
     const balance = useAppSelector(state => state.balanceReducer);
     const dispatch = useDispatch();
-    const [target, setTarget] = useState<number>(1000)
+    const [target, setTarget] = useState<number>(500)
     const [savingsModalType, setSavingsModalType] = useState<SavingsType>(null);
     const progress = Math.round(balance.savings/target*100);
 
@@ -44,7 +44,7 @@ const SavingsContent = ({handleForm}:SavingsContentProps) => {
                     <Button variant="secondary" onClick={() => handleButtonClick('transfer') }>Transfer to savings</Button>
                     <div className='savings-content_wrap'>
                         <Button variant="outline-secondary" onClick={() => handleButtonClick('target')}>Set Target</Button>
-                        <Button variant="secondary" onClick={()=>setTargetSavings(1000)}>Reset</Button>
+                        <Button variant="secondary" onClick={()=>setTargetSavings(500)}>Reset</Button>
                     </div>
                     <Button variant="secondary" onClick={() => handleButtonClick('withdraw')}>Withdraw from savings</Button>
                 </Card.Footer>
