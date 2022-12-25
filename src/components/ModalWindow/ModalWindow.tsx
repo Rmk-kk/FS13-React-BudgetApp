@@ -1,5 +1,3 @@
-import './modal.css'
-
 import {Button, Modal, Form} from "react-bootstrap";
 import {FormEvent, useState} from "react";
 import nextId from "react-id-generator";
@@ -25,6 +23,8 @@ const ModalWindow = (props:ModalWindowProps) => {
     //REDUX
     const modalShow = useAppSelector(state => state.modalReducer);
     const dispatch = useDispatch();
+
+    //PROPS
     const {handleForm} = props;
 
     //form Validation
@@ -39,7 +39,6 @@ const ModalWindow = (props:ModalWindowProps) => {
         if(!amount || amount <= 0) {
             setAmountError(true)
         }
-
         if(date && source && amount > 0 && type !== null && amount) {
             buildDataFromForm(e);
         }

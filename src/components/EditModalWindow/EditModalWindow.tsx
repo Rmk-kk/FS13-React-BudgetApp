@@ -7,13 +7,22 @@ import {useDispatch} from "react-redux";
 import {editTransaction} from "../../redux/slices/listReducer";
 
 const EditModalWindow = (props:EditModalProps) => {
-    const list =useAppSelector(state => state.listReducer);
-    const balance = useAppSelector(state => state.balanceReducer)
-    const dispatch = useDispatch();
     const [transaction, setTransaction] = useState<listItem | null>(null);
     const [amount, setAmount] = useState(0);
     const [source,setSource] = useState('');
     const [date, setDate] = useState<Date | null>(null);
+
+    //validation props
+    const [dateError, setDateError] = useState(false);
+    const [amountError, setAmountError] = useState(false);
+    const [sourceError,setSourceError] = useState(false);
+    const [transactionError, setTransactionError] = useState(false);
+    //REDUX
+    const list =useAppSelector(state => state.listReducer);
+    const balance = useAppSelector(state => state.balanceReducer)
+    const dispatch = useDispatch();
+
+    //PROPS
     const {edit, setEdit, transactionId} = props;
 
     useEffect(() => {
@@ -27,13 +36,24 @@ const EditModalWindow = (props:EditModalProps) => {
 
     const validateForm = (e:FormEvent) => {
         e.preventDefault();
+        if(!date) {
+            setDateError(true);
+        }
+        if(!source) {
+            setSourceError(true)
+        }
+        if(!amount || amount <= 0) {
+            setAmountError(true)
+        }
         if(transaction && amount > 0 && source && date) {
             const newTransaction = {id: transaction.id, amount, type: transaction.type, date: createDate(date) , source};
-            if(balance.total - newTransaction.amount >= 0) {
-                dispatch(editTransaction(newTransaction));
-                setEdit(false)
+            console.log(transaction.amount + ' ' + newTransaction.amount)
+            if(balance.total + transaction.amount - newTransaction.amount < 0) {
+                setTransactionError(true);
             } else {
-                console.log('Balance cannot go below zero')
+                dispatch(editTransaction(newTransaction));
+                setTransactionError(false)
+                setEdit(false)
             }
         }
     }
@@ -69,7 +89,11 @@ const EditModalWindow = (props:EditModalProps) => {
                                       placeholder="Enter transaction amount"
                                       onChange={(e) => {
                                           validateInput(e.currentTarget.value, 'amount')
+                                          setAmountError(false);
+                                          setTransactionError(false);
                                       }}/>
+                        {amountError && <p className='modal-error_message'>Amount must be greater than 0</p>}
+                        {transactionError && <p className='modal-error_message'>Balance will become negative, enter valid amount</p>}
                     </Form.Group>
                     {/*SOURCE*/}
                     <Form.Group className="mb-3" controlId="source">
@@ -78,7 +102,12 @@ const EditModalWindow = (props:EditModalProps) => {
                                       required
                                       value={source}
                                       placeholder="Source of transaction"
-                                      onChange={(e) => {validateInput(e.currentTarget.value, 'source')}}/>
+                                      onChange={(e) => {
+                                          validateInput(e.currentTarget.value, 'source')
+                                          setSourceError(false)
+                                      }}/>
+                        {sourceError && <p className='modal-error_message'>Enter valid transaction source</p>}
+
                     </Form.Group>
 
                     {/*Date*/}
@@ -86,12 +115,20 @@ const EditModalWindow = (props:EditModalProps) => {
                         <Form.Label>Date</Form.Label>
                         <Form.Control type="date"
                                       placeholder="Enter date"
-                                      onChange={(e) => setDate(new Date(e.currentTarget.value))}/>
+                                      onChange={(e) => {
+                                          setDate(new Date(e.currentTarget.value))
+                                          setDateError(false)
+                                      }}/>
+                        {dateError && <p className='modal-error_message'>Enter valid date</p>}
                     </Form.Group>
 
                     <Modal.Footer>
                         <Button variant="outline-secondary" onClick={() => {
                             setEdit(false)
+                            setTransactionError(false)
+                            setDateError(false)
+                            setAmountError(false)
+                            setSourceError(false)
                         }}>
                             Close
                         </Button>

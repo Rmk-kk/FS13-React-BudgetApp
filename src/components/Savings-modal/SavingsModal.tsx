@@ -13,7 +13,7 @@ const SavingsModal = ({setSavingsShow,
                           setTargetSavings}:SavingsModalProps) => {
 
     const [amount, setAmount] = useState(0);
-
+    const [error, setError] = useState(false);
 
     //validate input
     const validateInput = (data:string) => {
@@ -25,6 +25,10 @@ const SavingsModal = ({setSavingsShow,
     //send data to APP
     const buildDataFromForm = (e:FormEvent) => {
         e.preventDefault();
+        if(amount <= 0) {
+            setError(true)
+            return;
+        }
         const newDate = createDate(new Date());
         const newTransaction = {type, date: newDate, source: 'savings', amount, id: nextId()};
         if(type === 'withdraw' || type === 'transfer') {
@@ -63,7 +67,11 @@ const SavingsModal = ({setSavingsShow,
                                       required
                                       value={amount}
                                       placeholder="Enter transaction amount"
-                                      onChange={(e) => validateInput(e.currentTarget.value)}/>
+                                      onChange={(e) => {
+                                          validateInput(e.currentTarget.value)
+                                          setError(false)
+                                      }}/>
+                        {error && <p className='modal-error_message'>Amount must be greater than 0</p>}
                     </Form.Group>
 
                     <Modal.Footer>
